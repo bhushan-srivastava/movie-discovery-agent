@@ -1,0 +1,32 @@
+ {
+  "name": "movie-discovery-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@ant-design/icons": "^5.6.1",
+    "antd": "^5.27.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^8.0.7",
+    "remark-gfm": "^3.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
+    "jsdom": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}
+
+
+
+

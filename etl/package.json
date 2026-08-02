@@ -1,0 +1,19 @@
+{
+  "name": "movie-etl",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Imports the Kaggle TMDB 5000 movie dataset into Neon PostgreSQL.",
+  "scripts": {
+    "import": "node src/index.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
+  }
+}
