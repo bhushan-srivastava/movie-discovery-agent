@@ -12,16 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.ToolCallbackProvider;
 
-import java.io.OutputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class ChatOrchestrationService {
@@ -30,7 +25,6 @@ public class ChatOrchestrationService {
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
-    private final NdjsonEventWriter writer = new NdjsonEventWriter();
     private final ChatClient chatClient;
     private final List<ToolCallbackProvider> toolCallbackProviders;
 
@@ -112,166 +106,29 @@ public class ChatOrchestrationService {
         }
     }
 
-    /**
-     * Start a streaming assistant response that writes NDJSON events to the provided OutputStream.
-     * This implementation uses the installed Spring AI 2.0 ChatClient streaming API.
-     */
-    public void streamAssistantResponse(UUID conversationId, String userMessage, OutputStream out) throws Exception {
-        CompletableFuture<Void> firstSignal = new CompletableFuture<>();
-        CompletableFuture<Void> writePermit = new CompletableFuture<>();
-        firstSignal.whenComplete((ignored, failure) -> {
-            if (failure == null) {
-                writePermit.complete(null);
-            }
-            else {
-                writePermit.completeExceptionally(failure);
-            }
-        });
-        streamAssistantResponse(conversationId, userMessage, out, firstSignal, writePermit);
-    }
-
-    /**
-     * Non-blocking streaming entrypoint with explicit signals.
-     */
-    public void streamAssistantResponse(UUID conversationId, String userMessage, OutputStream out,
-                                        CompletableFuture<Void> firstSignal,
-                                        CompletableFuture<Void> writePermit) throws Exception {
-        String streamId = UUID.randomUUID().toString();
-        log.info("STREAM_START conversationId={} streamId={}", conversationId, streamId);
-
-        // Load context
+    /** Executes one completed model request and persists its assistant message on success only. */
+    @Transactional
+    public String completeAssistantResponse(UUID conversationId, String userMessage) {
         List<Message> context = loadLatest10Chronological(conversationId);
-
-        // Prepare a queue to receive NDJSON lines from the model stream
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        AtomicBoolean firstSeen = new AtomicBoolean(false);
-
-        // Accumulate assistant content so we can persist the full assistant message once complete
-        StringBuilder assistantAccumulator = new StringBuilder();
-
-        // Build chat request using the ChatClient fluent API.
-        var reqSpec = chatClient.prompt()
-                 .system(MovieAssistantPrompt.SYSTEM_PROMPT);
-
-        // Add historical messages as repeated user/system calls
+        var reqSpec = chatClient.prompt().system(MovieAssistantPrompt.SYSTEM_PROMPT);
         for (Message m : context) {
             if (m.getRole() == MessageRole.USER) {
                 reqSpec.user(m.getContent());
-            }
-            else if (m.getRole() == MessageRole.ASSISTANT) {
+            } else if (m.getRole() == MessageRole.ASSISTANT) {
                 reqSpec.system("Assistant: " + m.getContent());
             }
         }
-
-        // Add current user message
-        reqSpec.user(userMessage);
-
-        // Attach tool callback providers if available
+        if (context.isEmpty() || !userMessage.equals(context.get(context.size() - 1).getContent())) {
+            reqSpec.user(userMessage);
+        }
         if (toolCallbackProviders != null && !toolCallbackProviders.isEmpty()) {
-            log.debug("MCP_TOOLS supplied to ChatClient request; {} tool provider(s) available", toolCallbackProviders.size());
             reqSpec.tools(toolCallbackProviders.toArray());
         }
-
-        // Subscribe to the streaming content flux
-        var streamSpec = reqSpec.stream();
-        var contentFlux = streamSpec.content();
-
-        var subscription = contentFlux.subscribe(
-                chunk -> {
-                    try {
-                        if (firstSeen.compareAndSet(false, true)) {
-                            log.debug("STREAM_FIRST_CHUNK streamId={}", streamId);
-                            firstSignal.complete(null);
-                        }
-                        assistantAccumulator.append(chunk);
-                        String ndjson = writer.toJson(new NdjsonEvent("text-delta", Collections.singletonMap("delta", chunk)));
-                        queue.put(ndjson);
-                    }
-                    catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                    catch (Exception e) {
-                        try {
-                            queue.put("__STREAM_END__");
-                        }
-                        catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                },
-                error -> {
-                    try {
-                        log.error("STREAM_ERROR streamId={} error={} message={}", streamId, error.getClass().getSimpleName(), error.getMessage());
-                        if (!firstSignal.isDone()) {
-                            firstSignal.completeExceptionally(error);
-                        }
-                        // emit a safe NDJSON error event with detailed error info
-                        String errorMsg = error.getMessage() != null ? error.getMessage() : "model stream failed";
-                        // Sanitize error message to prevent JSON parsing issues
-                        errorMsg = errorMsg.replace("\"", "'");
-                        String err = writer.toJson(new NdjsonEvent("error", Collections.singletonMap("message", errorMsg)));
-                        queue.put(err);
-                        queue.put("__STREAM_END__");
-                    }
-                    catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                    catch (Exception e) {
-                        try {
-                            queue.put("__STREAM_END__");
-                        }
-                        catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                },
-                () -> {
-                    try {
-                        log.info("STREAM_COMPLETE streamId={} accumulatedLength={}", streamId, assistantAccumulator.length());
-                        // Persist only after successful completion
-                        persistAssistantMessageAndUpdateConversation(conversationId, assistantAccumulator.toString());
-                        // emit completion event
-                        var completionData = Collections.<String, Object>singletonMap("message", "done");
-                        String done = writer.toJson(new NdjsonEvent("completion", completionData));
-                        queue.put(done);
-                        queue.put("__STREAM_END__");
-                    }
-                    catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                    catch (Exception e) {
-                        try {
-                            queue.put("__STREAM_END__");
-                        }
-                        catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                }
-        );
-
-        // Drain queue and write to provided OutputStream until sentinel
-        try {
-            boolean wroteFirst = false;
-            while (true) {
-                String line = queue.take();
-                if ("__STREAM_END__".equals(line)) break;
-                // ensure controller has set headers and permitted writing after first model signal
-                if (!wroteFirst) {
-                    try {
-                        writePermit.join();
-                    }
-                    catch (Exception joinEx) {
-                        // controller signalled failure/timeout; stop without emitting partial persistence
-                        break;
-                    }
-                    wroteFirst = true;
-                }
-                writer.writeRawLine(out, line);
-            }
+        String assistantContent = reqSpec.call().content();
+        if (assistantContent == null || assistantContent.isBlank()) {
+            throw new IllegalStateException("The assistant returned an empty response");
         }
-        finally {
-            subscription.dispose();
-        }
+        persistAssistantMessageAndUpdateConversation(conversationId, assistantContent);
+        return assistantContent;
     }
 }

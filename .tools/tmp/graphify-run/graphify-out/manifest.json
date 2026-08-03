@@ -1,0 +1,637 @@
+{
+  ".agents/skills/bmad-agent-builder/assets/init-sanctum-template.py": {
+    "mtime": 1784285922.8232315,
+    "ast_hash": "3bdc0869f0fdc19f0ce02a04e03df4c5",
+    "semantic_hash": "3bdc0869f0fdc19f0ce02a04e03df4c5"
+  },
+  ".agents/skills/bmad-agent-builder/assets/wake-template.py": {
+    "mtime": 1784285922.8495817,
+    "ast_hash": "11f970f08876fd16415092bcd6cbfce7",
+    "semantic_hash": "11f970f08876fd16415092bcd6cbfce7"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/count_tokens.py": {
+    "mtime": 1784285922.9212756,
+    "ast_hash": "fc29e83e678e97dfa0e9b5da12f939e1",
+    "semantic_hash": "fc29e83e678e97dfa0e9b5da12f939e1"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/prepass.py": {
+    "mtime": 1784285922.9258025,
+    "ast_hash": "3fed85df9a514bdaabb2d1cb3098af7c",
+    "semantic_hash": "3fed85df9a514bdaabb2d1cb3098af7c"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/process-template.py": {
+    "mtime": 1784285922.9287937,
+    "ast_hash": "aaee0f10f52df42cb92c9e4fd48dc536",
+    "semantic_hash": "aaee0f10f52df42cb92c9e4fd48dc536"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/render_report.py": {
+    "mtime": 1784285922.9327948,
+    "ast_hash": "6362fe5905b3c7c21e9456117fb5faa9",
+    "semantic_hash": "6362fe5905b3c7c21e9456117fb5faa9"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/scan-path-standards.py": {
+    "mtime": 1784285922.9367929,
+    "ast_hash": "3b20ece5f8c2f0ab18e122dd6a03197e",
+    "semantic_hash": "3b20ece5f8c2f0ab18e122dd6a03197e"
+  },
+  ".agents/skills/bmad-agent-builder/scripts/scan-scripts.py": {
+    "mtime": 1784285922.9397933,
+    "ast_hash": "c1bb634d81902338abed825f68b9fbdd",
+    "semantic_hash": "c1bb634d81902338abed825f68b9fbdd"
+  },
+  ".agents/skills/bmad-architecture/scripts/lint_spine.py": {
+    "mtime": 1784285653.9766765,
+    "ast_hash": "2e08144a5d5f4e13596433571eeee37e",
+    "semantic_hash": "2e08144a5d5f4e13596433571eeee37e"
+  },
+  ".agents/skills/bmad-architecture/scripts/tests/test_lint_spine.py": {
+    "mtime": 1784285654.0322983,
+    "ast_hash": "d8cc69230655e2cf3c91b5cf8d0e820f",
+    "semantic_hash": "d8cc69230655e2cf3c91b5cf8d0e820f"
+  },
+  ".agents/skills/bmad-bmb-setup/scripts/cleanup-legacy.py": {
+    "mtime": 1784285922.9548001,
+    "ast_hash": "24d06c37511164b201fb7fe876e1d547",
+    "semantic_hash": "24d06c37511164b201fb7fe876e1d547"
+  },
+  ".agents/skills/bmad-bmb-setup/scripts/merge-config.py": {
+    "mtime": 1784285922.9588103,
+    "ast_hash": "1bc10d4219c0b9f242fcd0c2bd553b40",
+    "semantic_hash": "1bc10d4219c0b9f242fcd0c2bd553b40"
+  },
+  ".agents/skills/bmad-bmb-setup/scripts/merge-help-csv.py": {
+    "mtime": 1784285922.9626272,
+    "ast_hash": "636ba55d6ab94cd164c4e3ff724987b5",
+    "semantic_hash": "636ba55d6ab94cd164c4e3ff724987b5"
+  },
+  ".agents/skills/bmad-brainstorming/assets/brain-icons.json": {
+    "mtime": 1784285652.8539996,
+    "ast_hash": "9d9463527193167cd224e2b52b1e0839",
+    "semantic_hash": "9d9463527193167cd224e2b52b1e0839"
+  },
+  ".agents/skills/bmad-brainstorming/scripts/brain.py": {
+    "mtime": 1784285653.9706707,
+    "ast_hash": "5cb569158cbcbd7f8d181eaa01fa0669",
+    "semantic_hash": "5cb569158cbcbd7f8d181eaa01fa0669"
+  },
+  ".agents/skills/bmad-brainstorming/scripts/tests/test_brain.py": {
+    "mtime": 1784285654.026298,
+    "ast_hash": "dd31e0b4032df5266d3da4e85aef750e",
+    "semantic_hash": "dd31e0b4032df5266d3da4e85aef750e"
+  },
+  ".agents/skills/bmad-customize/scripts/list_customizable_skills.py": {
+    "mtime": 1784285653.9826863,
+    "ast_hash": "67d6f21848aff408fefde505f35ba7e5",
+    "semantic_hash": "67d6f21848aff408fefde505f35ba7e5"
+  },
+  ".agents/skills/bmad-customize/scripts/tests/test_list_customizable_skills.py": {
+    "mtime": 1784285654.0408125,
+    "ast_hash": "93902400a639f91321e49d8c6374223e",
+    "semantic_hash": "93902400a639f91321e49d8c6374223e"
+  },
+  ".agents/skills/bmad-document-project/templates/project-scan-report-schema.json": {
+    "mtime": 1784285652.8821154,
+    "ast_hash": "71d5d42e569dcfeaadad5307c953097f",
+    "semantic_hash": "71d5d42e569dcfeaadad5307c953097f"
+  },
+  ".agents/skills/bmad-eval-runner/assets/adapter-claude-code.json": {
+    "mtime": 1784285922.9704561,
+    "ast_hash": "eb44eca9ed2b7fce77b38e5c07b6bf63",
+    "semantic_hash": "eb44eca9ed2b7fce77b38e5c07b6bf63"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/aggregate_benchmark.py": {
+    "mtime": 1784285922.9899766,
+    "ast_hash": "c6e915de11332c58d966c896e9baaa20",
+    "semantic_hash": "c6e915de11332c58d966c896e9baaa20"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/memlog.py": {
+    "mtime": 1784285922.9939766,
+    "ast_hash": "5a0feca4d20584a1be08b59fdc782a47",
+    "semantic_hash": "5a0feca4d20584a1be08b59fdc782a47"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/run_evals.py": {
+    "mtime": 1784285922.997976,
+    "ast_hash": "954f6ebd02c454bde45f9a9afd8cca9f",
+    "semantic_hash": "954f6ebd02c454bde45f9a9afd8cca9f"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/run_triggers.py": {
+    "mtime": 1784285923.0019865,
+    "ast_hash": "b83aac09dcde91402fc203c5e114f214",
+    "semantic_hash": "b83aac09dcde91402fc203c5e114f214"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/tests/test_env_isolation.py": {
+    "mtime": 1784285923.0059755,
+    "ast_hash": "e7c91a0002b373a484a8f80069dca5e1",
+    "semantic_hash": "e7c91a0002b373a484a8f80069dca5e1"
+  },
+  ".agents/skills/bmad-eval-runner/scripts/tests/test_trigger_detection.py": {
+    "mtime": 1784285923.0099843,
+    "ast_hash": "7ef4081103562a69e967f698fce5a8d8",
+    "semantic_hash": "7ef4081103562a69e967f698fce5a8d8"
+  },
+  ".agents/skills/bmad-forge-idea/scripts/resolve_personas.py": {
+    "mtime": 1784285654.0182836,
+    "ast_hash": "59497220f56c0e059be6b87178673f53",
+    "semantic_hash": "59497220f56c0e059be6b87178673f53"
+  },
+  ".agents/skills/bmad-forge-idea/scripts/tests/test_resolve_personas.py": {
+    "mtime": 1784285654.0568388,
+    "ast_hash": "0fcd997445cd732e6cbcc68381587592",
+    "semantic_hash": "0fcd997445cd732e6cbcc68381587592"
+  },
+  ".agents/skills/bmad-loop-setup/scripts/cleanup-legacy.py": {
+    "mtime": 1784285875.9230819,
+    "ast_hash": "4cbf7a97f730189f4b65ed43e263c9eb",
+    "semantic_hash": "4cbf7a97f730189f4b65ed43e263c9eb"
+  },
+  ".agents/skills/bmad-loop-setup/scripts/merge-config.py": {
+    "mtime": 1784285875.92708,
+    "ast_hash": "b281bcb1d41a43711113c02b419bee89",
+    "semantic_hash": "b281bcb1d41a43711113c02b419bee89"
+  },
+  ".agents/skills/bmad-loop-setup/scripts/merge-help-csv.py": {
+    "mtime": 1784285875.931086,
+    "ast_hash": "e4ce8494feeccecf114b575854f89b56",
+    "semantic_hash": "e4ce8494feeccecf114b575854f89b56"
+  },
+  ".agents/skills/bmad-module-builder/assets/setup-skill-template/scripts/cleanup-legacy.py": {
+    "mtime": 1784285923.0405207,
+    "ast_hash": "24d06c37511164b201fb7fe876e1d547",
+    "semantic_hash": "24d06c37511164b201fb7fe876e1d547"
+  },
+  ".agents/skills/bmad-module-builder/assets/setup-skill-template/scripts/merge-config.py": {
+    "mtime": 1784285923.04452,
+    "ast_hash": "1bc10d4219c0b9f242fcd0c2bd553b40",
+    "semantic_hash": "1bc10d4219c0b9f242fcd0c2bd553b40"
+  },
+  ".agents/skills/bmad-module-builder/assets/setup-skill-template/scripts/merge-help-csv.py": {
+    "mtime": 1784285923.0495174,
+    "ast_hash": "636ba55d6ab94cd164c4e3ff724987b5",
+    "semantic_hash": "636ba55d6ab94cd164c4e3ff724987b5"
+  },
+  ".agents/skills/bmad-module-builder/assets/standalone-module-template/merge-config.py": {
+    "mtime": 1784285923.0555303,
+    "ast_hash": "1bc10d4219c0b9f242fcd0c2bd553b40",
+    "semantic_hash": "1bc10d4219c0b9f242fcd0c2bd553b40"
+  },
+  ".agents/skills/bmad-module-builder/assets/standalone-module-template/merge-help-csv.py": {
+    "mtime": 1784285923.0595295,
+    "ast_hash": "636ba55d6ab94cd164c4e3ff724987b5",
+    "semantic_hash": "636ba55d6ab94cd164c4e3ff724987b5"
+  },
+  ".agents/skills/bmad-module-builder/scripts/scaffold-setup-skill.py": {
+    "mtime": 1784285923.0796354,
+    "ast_hash": "5a6f25fca6065f64a9ca726923a91df4",
+    "semantic_hash": "5a6f25fca6065f64a9ca726923a91df4"
+  },
+  ".agents/skills/bmad-module-builder/scripts/scaffold-standalone-module.py": {
+    "mtime": 1784285923.0832405,
+    "ast_hash": "513ae3992dfef8c5b876a2ecea3986e9",
+    "semantic_hash": "513ae3992dfef8c5b876a2ecea3986e9"
+  },
+  ".agents/skills/bmad-module-builder/scripts/tests/test-scaffold-setup-skill.py": {
+    "mtime": 1784285923.0882006,
+    "ast_hash": "2e8a2235db82ad718b205ac76575feb5",
+    "semantic_hash": "2e8a2235db82ad718b205ac76575feb5"
+  },
+  ".agents/skills/bmad-module-builder/scripts/tests/test-scaffold-standalone-module.py": {
+    "mtime": 1784285923.092201,
+    "ast_hash": "7c54b3f0861138d5f6947aceb08a7034",
+    "semantic_hash": "7c54b3f0861138d5f6947aceb08a7034"
+  },
+  ".agents/skills/bmad-module-builder/scripts/tests/test-validate-module.py": {
+    "mtime": 1784285923.0962002,
+    "ast_hash": "b6da50acb2b79d33ac87d3e565a06c15",
+    "semantic_hash": "b6da50acb2b79d33ac87d3e565a06c15"
+  },
+  ".agents/skills/bmad-module-builder/scripts/validate-module.py": {
+    "mtime": 1784285923.1002002,
+    "ast_hash": "0234fdceeec5943364dcd69a0c4302b9",
+    "semantic_hash": "0234fdceeec5943364dcd69a0c4302b9"
+  },
+  ".agents/skills/bmad-party-mode/scripts/resolve_party.py": {
+    "mtime": 1784285654.0123463,
+    "ast_hash": "6531a50a9e316a5a5a931c3e8ea9f0a4",
+    "semantic_hash": "6531a50a9e316a5a5a931c3e8ea9f0a4"
+  },
+  ".agents/skills/bmad-party-mode/scripts/tests/test-resolve_party.py": {
+    "mtime": 1784285654.063132,
+    "ast_hash": "e19cc61beb3d6c4c1c0cb51a5fa11286",
+    "semantic_hash": "e19cc61beb3d6c4c1c0cb51a5fa11286"
+  },
+  ".agents/skills/bmad-prfaq/bmad-manifest.json": {
+    "mtime": 1784285652.842986,
+    "ast_hash": "20902e41afc56a8a6d08fa126e9b3e2b",
+    "semantic_hash": "20902e41afc56a8a6d08fa126e9b3e2b"
+  },
+  ".agents/skills/bmad-testarch-ci/jenkins-pipeline-template.groovy": {
+    "mtime": 1784285881.4000943,
+    "ast_hash": "c38d4598d1cd96484eb2b88c464fc9b5",
+    "semantic_hash": "c38d4598d1cd96484eb2b88c464fc9b5"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/count_tokens.py": {
+    "mtime": 1784285923.177304,
+    "ast_hash": "d584e9a54afd06a57818152d3c67c61d",
+    "semantic_hash": "d584e9a54afd06a57818152d3c67c61d"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/init_skill.py": {
+    "mtime": 1784285923.1812925,
+    "ast_hash": "e57eac5fe3f07b35016422eb1a1f6583",
+    "semantic_hash": "e57eac5fe3f07b35016422eb1a1f6583"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/prepass-prompt-metrics.py": {
+    "mtime": 1784285923.1842906,
+    "ast_hash": "dbf834d5189dd3ec7d6959ffe0ea3344",
+    "semantic_hash": "dbf834d5189dd3ec7d6959ffe0ea3344"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/prepass-workflow-integrity.py": {
+    "mtime": 1784285923.1957927,
+    "ast_hash": "77d93a78c648c2f88e8f712f908fd576",
+    "semantic_hash": "77d93a78c648c2f88e8f712f908fd576"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/quick_validate.py": {
+    "mtime": 1784285923.1987896,
+    "ast_hash": "c3e65f913c09b19a4f1473b6ac3ed310",
+    "semantic_hash": "c3e65f913c09b19a4f1473b6ac3ed310"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/render_report.py": {
+    "mtime": 1784285923.201781,
+    "ast_hash": "6362fe5905b3c7c21e9456117fb5faa9",
+    "semantic_hash": "6362fe5905b3c7c21e9456117fb5faa9"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/scan-path-standards.py": {
+    "mtime": 1784285923.204781,
+    "ast_hash": "4dc3990e6785a7d122e89450582cbf2a",
+    "semantic_hash": "4dc3990e6785a7d122e89450582cbf2a"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/scan-scripts.py": {
+    "mtime": 1784285923.2077804,
+    "ast_hash": "e6585a291cb233f83560f7c848078b4b",
+    "semantic_hash": "e6585a291cb233f83560f7c848078b4b"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/tests/test_canon_sync.py": {
+    "mtime": 1784285923.210788,
+    "ast_hash": "766f8f0136fd7ea25a21c097a78eda6c",
+    "semantic_hash": "766f8f0136fd7ea25a21c097a78eda6c"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/tests/test_count_tokens.py": {
+    "mtime": 1784285923.2147868,
+    "ast_hash": "28ea33a5b20c220e7b9ee2790cb5a6e6",
+    "semantic_hash": "28ea33a5b20c220e7b9ee2790cb5a6e6"
+  },
+  ".agents/skills/bmad-workflow-builder/scripts/tests/test_render_report.py": {
+    "mtime": 1784285923.218788,
+    "ast_hash": "2e2d533b5eeab7fe7af71e6c3f6516ba",
+    "semantic_hash": "2e2d533b5eeab7fe7af71e6c3f6516ba"
+  },
+  ".agents/skills/wds-5-agentic-development/templates/components/dev-mode.js": {
+    "mtime": 1784285940.6872346,
+    "ast_hash": "f1639a9f314b8d6ce60599566cc17f8c",
+    "semantic_hash": "f1639a9f314b8d6ce60599566cc17f8c"
+  },
+  ".agents/skills/wds-5-agentic-development/templates/demo-data-template.json": {
+    "mtime": 1784285940.6902335,
+    "ast_hash": "f27f41d82843e217de60f2ade074d164",
+    "semantic_hash": "f27f41d82843e217de60f2ade074d164"
+  },
+  "backend/build-sources/org/springframework/ai/chat/client/ChatClient.java": {
+    "mtime": 1781241048.0,
+    "ast_hash": "541e1d4277789654f948f5ba40e6acfd",
+    "semantic_hash": "541e1d4277789654f948f5ba40e6acfd"
+  },
+  "backend/mvnw": {
+    "mtime": 1784284096.8495266,
+    "ast_hash": "ab50dd89da7da2346b28003352eeeeeb",
+    "semantic_hash": "ab50dd89da7da2346b28003352eeeeeb"
+  },
+  "backend/pom.xml": {
+    "mtime": 1785494293.0212846,
+    "ast_hash": "15b8c1cb7d9f0129a0975c09c3e99bb2",
+    "semantic_hash": "15b8c1cb7d9f0129a0975c09c3e99bb2"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/MovieDiscoveryAgentApplication.java": {
+    "mtime": 1784284096.8303092,
+    "ast_hash": "5c2c76e426628843d8ba231c04ebe64a",
+    "semantic_hash": "5c2c76e426628843d8ba231c04ebe64a"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/ChatClientConfig.java": {
+    "mtime": 1785589498.386386,
+    "ast_hash": "53c64a2e09bb1cd74ff68ea07d92b7e2",
+    "semantic_hash": "53c64a2e09bb1cd74ff68ea07d92b7e2"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/ChatOrchestrationService.java": {
+    "mtime": 1785653540.4885645,
+    "ast_hash": "76f328a08fbfcb68b01ac1a9b3701dbd",
+    "semantic_hash": "76f328a08fbfcb68b01ac1a9b3701dbd"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/ChatRequest.java": {
+    "mtime": 1785496120.0635746,
+    "ast_hash": "17e035fe8375d60e943b9fd2412d535d",
+    "semantic_hash": "17e035fe8375d60e943b9fd2412d535d"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/MovieAssistantPrompt.java": {
+    "mtime": 1785600663.515062,
+    "ast_hash": "dd4b0a3a0de77dbdacb41fe35c02c8e8",
+    "semantic_hash": "dd4b0a3a0de77dbdacb41fe35c02c8e8"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/NdjsonEvent.java": {
+    "mtime": 1785496140.2787068,
+    "ast_hash": "d0cd6fafa65f42c93055f707fae1a4da",
+    "semantic_hash": "d0cd6fafa65f42c93055f707fae1a4da"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/chat/NdjsonEventWriter.java": {
+    "mtime": 1785500005.4029663,
+    "ast_hash": "4c4ebef396545826cbc5147b38fee2d6",
+    "semantic_hash": "4c4ebef396545826cbc5147b38fee2d6"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/controller/ChatStreamController.java": {
+    "mtime": 1785593204.9008648,
+    "ast_hash": "5004935c4ae88183aebd7d9087df555d",
+    "semantic_hash": "5004935c4ae88183aebd7d9087df555d"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/controller/ConversationController.java": {
+    "mtime": 1785492910.640131,
+    "ast_hash": "5a6d7fa48aa902fa72cc20aa96346b1c",
+    "semantic_hash": "5a6d7fa48aa902fa72cc20aa96346b1c"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/exception/NotFoundException.java": {
+    "mtime": 1785492876.5361598,
+    "ast_hash": "b69f3a6baa4b56769df05ae47997c711",
+    "semantic_hash": "b69f3a6baa4b56769df05ae47997c711"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/exception/RestExceptionHandler.java": {
+    "mtime": 1785593480.9173758,
+    "ast_hash": "cd95be52eabe14cff98b55fdb9c8fc3c",
+    "semantic_hash": "cd95be52eabe14cff98b55fdb9c8fc3c"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/mcp/client/NeonMcpClientConfig.java": {
+    "mtime": 1785242668.0701044,
+    "ast_hash": "38aa9dd159567eaf103a01909b108d20",
+    "semantic_hash": "38aa9dd159567eaf103a01909b108d20"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/model/api/ConversationResponse.java": {
+    "mtime": 1785492858.3133473,
+    "ast_hash": "e0872fdf15916f5b3f2d63cd57e84830",
+    "semantic_hash": "e0872fdf15916f5b3f2d63cd57e84830"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/model/api/CreateConversationRequest.java": {
+    "mtime": 1785492850.4181101,
+    "ast_hash": "898b7a60fedbb964b49746dfb065c627",
+    "semantic_hash": "898b7a60fedbb964b49746dfb065c627"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/model/api/ErrorResponse.java": {
+    "mtime": 1785492869.3272953,
+    "ast_hash": "45420fc554391b455f2237553b0da1ac",
+    "semantic_hash": "45420fc554391b455f2237553b0da1ac"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/model/api/MessageResponse.java": {
+    "mtime": 1785492864.6618497,
+    "ast_hash": "a6da033597105d2bbfacc6ec3a2afab9",
+    "semantic_hash": "a6da033597105d2bbfacc6ec3a2afab9"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/persistence/entity/Conversation.java": {
+    "mtime": 1785492834.9461236,
+    "ast_hash": "224329d80241ab575f4cd39b9a2a513f",
+    "semantic_hash": "224329d80241ab575f4cd39b9a2a513f"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/persistence/entity/Message.java": {
+    "mtime": 1785493549.669643,
+    "ast_hash": "0e5aa70dfb5f5783bc7a60a5ce6f1616",
+    "semantic_hash": "0e5aa70dfb5f5783bc7a60a5ce6f1616"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/persistence/entity/MessageRole.java": {
+    "mtime": 1785492779.4824765,
+    "ast_hash": "f1ba9af93ec9f3ca14ccc74af6a8effd",
+    "semantic_hash": "f1ba9af93ec9f3ca14ccc74af6a8effd"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/persistence/repository/ConversationRepository.java": {
+    "mtime": 1785233693.8617544,
+    "ast_hash": "a407d2bd0e3d87fa484263fadb7a59b0",
+    "semantic_hash": "a407d2bd0e3d87fa484263fadb7a59b0"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/persistence/repository/MessageRepository.java": {
+    "mtime": 1785597270.4229648,
+    "ast_hash": "2c61aa892000077587e1bc1c5238d461",
+    "semantic_hash": "2c61aa892000077587e1bc1c5238d461"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/service/ConversationService.java": {
+    "mtime": 1785492894.9876208,
+    "ast_hash": "9d57b68de3f167098f449b20d103f9a2",
+    "semantic_hash": "9d57b68de3f167098f449b20d103f9a2"
+  },
+  "backend/src/main/java/com/group/moviediscoveryagent/service/MessageService.java": {
+    "mtime": 1785492903.0548718,
+    "ast_hash": "370e991fde5299e61ad03bd0077302df",
+    "semantic_hash": "370e991fde5299e61ad03bd0077302df"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/MovieDiscoveryAgentApplicationTests.java": {
+    "mtime": 1785574463.121578,
+    "ast_hash": "ffc2bc4b4f47940c1269d8b3f1b674e8",
+    "semantic_hash": "ffc2bc4b4f47940c1269d8b3f1b674e8"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/TestMovieDiscoveryAgentApplication.java": {
+    "mtime": 1785081778.1610448,
+    "ast_hash": "977093145cd12e23536600b88f6cf7f7",
+    "semantic_hash": "977093145cd12e23536600b88f6cf7f7"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/chat/MovieAssistantPromptTests.java": {
+    "mtime": 1785600682.107057,
+    "ast_hash": "bfe5bc26bc914d1dcb2cb69b7beaf664",
+    "semantic_hash": "bfe5bc26bc914d1dcb2cb69b7beaf664"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/config/TestChatClientConfig.java": {
+    "mtime": 1785653542.829736,
+    "ast_hash": "e76eef8c57db78d6a70598e8c5c1d3f0",
+    "semantic_hash": "e76eef8c57db78d6a70598e8c5c1d3f0"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/controller/ChatStreamControllerTests.java": {
+    "mtime": 1785654039.196484,
+    "ast_hash": "2a259c5e1991545cf1ec0553da996e03",
+    "semantic_hash": "2a259c5e1991545cf1ec0553da996e03"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/controller/ConversationApiIntegrationTests.java": {
+    "mtime": 1785574452.991469,
+    "ast_hash": "0804179517ab35a79f904f4b8c935da4",
+    "semantic_hash": "0804179517ab35a79f904f4b8c935da4"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/controller/ConversationControllerTest.java": {
+    "mtime": 1785493869.9349809,
+    "ast_hash": "98d606558a8836aeb518e6d3369b4ea8",
+    "semantic_hash": "98d606558a8836aeb518e6d3369b4ea8"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/integration/GeminiChatClientContextTests.java": {
+    "mtime": 1785574468.4314365,
+    "ast_hash": "da6737c2c0e16de7dcc0da1b7917f5b5",
+    "semantic_hash": "da6737c2c0e16de7dcc0da1b7917f5b5"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/integration/NeonMcpToolDiscoveryIT.java": {
+    "mtime": 1785242795.8799717,
+    "ast_hash": "fa7d5fffdd041f2ae41fc396538208e4",
+    "semantic_hash": "fa7d5fffdd041f2ae41fc396538208e4"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/integration/NeonSchemaValidationIT.java": {
+    "mtime": 1785242069.9099343,
+    "ast_hash": "2f2897596eb1781ce66ae180478355f6",
+    "semantic_hash": "2f2897596eb1781ce66ae180478355f6"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/persistence/ConversationMessageRepositoryTests.java": {
+    "mtime": 1785574476.9041936,
+    "ast_hash": "e2424dd3103ea446d576f8601e41eb22",
+    "semantic_hash": "e2424dd3103ea446d576f8601e41eb22"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/service/ConversationServiceTest.java": {
+    "mtime": 1785492920.231378,
+    "ast_hash": "5f7139cf422b500fc2e9e24a96ac83b7",
+    "semantic_hash": "5f7139cf422b500fc2e9e24a96ac83b7"
+  },
+  "backend/src/test/java/com/group/moviediscoveryagent/service/MessageServiceTest.java": {
+    "mtime": 1785492937.176521,
+    "ast_hash": "4cff0045c8c26d36263f6890aed2d4e0",
+    "semantic_hash": "4cff0045c8c26d36263f6890aed2d4e0"
+  },
+  "backend/src/test/resources/schema.sql": {
+    "mtime": 1785233705.957112,
+    "ast_hash": "d8a939e9da5420cc5ea5d3266224c458",
+    "semantic_hash": "d8a939e9da5420cc5ea5d3266224c458"
+  },
+  "chat/MovieAssistantPrompt.java": {
+    "mtime": 1785596915.5989268,
+    "ast_hash": "e65bcbdf9e480ca6fb5032327fb15f47",
+    "semantic_hash": "e65bcbdf9e480ca6fb5032327fb15f47"
+  },
+  "etl/package.json": {
+    "mtime": 1785073042.020029,
+    "ast_hash": "2a6937a17de4175c315fba01becf0e3a",
+    "semantic_hash": "2a6937a17de4175c315fba01becf0e3a"
+  },
+  "etl/sql/schema.sql": {
+    "mtime": 1785073042.6158235,
+    "ast_hash": "7473b7ce7ef32891d083be3770a7cd87",
+    "semantic_hash": "7473b7ce7ef32891d083be3770a7cd87"
+  },
+  "etl/src/config.js": {
+    "mtime": 1785073042.5087554,
+    "ast_hash": "f304a6a848899e1b6778df870009e56d",
+    "semantic_hash": "f304a6a848899e1b6778df870009e56d"
+  },
+  "etl/src/csvReader.js": {
+    "mtime": 1785073042.4023666,
+    "ast_hash": "676a0b5897c0c7fb167332e74741be97",
+    "semantic_hash": "676a0b5897c0c7fb167332e74741be97"
+  },
+  "etl/src/index.js": {
+    "mtime": 1785073899.1154366,
+    "ast_hash": "97775e2f35f37dffaa821656c8fc6cbf",
+    "semantic_hash": "97775e2f35f37dffaa821656c8fc6cbf"
+  },
+  "etl/src/movieRepository.js": {
+    "mtime": 1785073042.3421464,
+    "ast_hash": "52033c7fa9ae3c0f2c0cd8f66dda741a",
+    "semantic_hash": "52033c7fa9ae3c0f2c0cd8f66dda741a"
+  },
+  "etl/src/normalize.js": {
+    "mtime": 1785073042.2314749,
+    "ast_hash": "6a4918d5119737f2c884880b2cbb5672",
+    "semantic_hash": "6a4918d5119737f2c884880b2cbb5672"
+  },
+  "etl/src/validate.js": {
+    "mtime": 1785073042.4595265,
+    "ast_hash": "ed809a9bcf3db0aec5644235dac75149",
+    "semantic_hash": "ed809a9bcf3db0aec5644235dac75149"
+  },
+  "etl/test/normalize.test.js": {
+    "mtime": 1785073042.9045613,
+    "ast_hash": "9af559b74acdb4e266236c5c41951489",
+    "semantic_hash": "9af559b74acdb4e266236c5c41951489"
+  },
+  "etl/test/validate.test.js": {
+    "mtime": 1785073042.8386953,
+    "ast_hash": "d7b57f8a45f526dc17b0edc58f610df3",
+    "semantic_hash": "d7b57f8a45f526dc17b0edc58f610df3"
+  },
+  "frontend/package.json": {
+    "mtime": 1785600618.121277,
+    "ast_hash": "3e3b55bb4b0d6ab1e19aed3d16a50cb6",
+    "semantic_hash": "3e3b55bb4b0d6ab1e19aed3d16a50cb6"
+  },
+  "frontend/src/App.jsx": {
+    "mtime": 1785600483.2716355,
+    "ast_hash": "adadf8aa6491595fcbf80dae46d19f6a",
+    "semantic_hash": "adadf8aa6491595fcbf80dae46d19f6a"
+  },
+  "frontend/src/api/chatApi.js": {
+    "mtime": 1785600492.335884,
+    "ast_hash": "1e10f564ba191435e7d93d131decefbd",
+    "semantic_hash": "1e10f564ba191435e7d93d131decefbd"
+  },
+  "frontend/src/api/chatApi.test.js": {
+    "mtime": 1785600499.873986,
+    "ast_hash": "cbcc956dcf4418fa09c4efac32cb6d20",
+    "semantic_hash": "cbcc956dcf4418fa09c4efac32cb6d20"
+  },
+  "frontend/src/components/ChatInput.jsx": {
+    "mtime": 1785601444.9471676,
+    "ast_hash": "5c70b1373d63f599b58b8a0a570fba44",
+    "semantic_hash": "5c70b1373d63f599b58b8a0a570fba44"
+  },
+  "frontend/src/components/ChatTranscript.jsx": {
+    "mtime": 1785605701.1855533,
+    "ast_hash": "f52fe472fbe95d3dd12e0b83d78f6043",
+    "semantic_hash": "f52fe472fbe95d3dd12e0b83d78f6043"
+  },
+  "frontend/src/components/ConversationSidebar.jsx": {
+    "mtime": 1785600546.9755259,
+    "ast_hash": "91079ab2a9c29a0824615a45efb39fee",
+    "semantic_hash": "91079ab2a9c29a0824615a45efb39fee"
+  },
+  "frontend/src/components/SharedWarningBanner.jsx": {
+    "mtime": 1785600531.134551,
+    "ast_hash": "7a8bdea063f97979a6c2d3307823030b",
+    "semantic_hash": "7a8bdea063f97979a6c2d3307823030b"
+  },
+  "frontend/src/components/SharedWarningBanner.test.jsx": {
+    "mtime": 1785600534.8515596,
+    "ast_hash": "86e40c932c2d473073267b032c9bedda",
+    "semantic_hash": "86e40c932c2d473073267b032c9bedda"
+  },
+  "frontend/src/components/ToolStatusPanel.jsx": {
+    "mtime": 1785600538.713578,
+    "ast_hash": "19f0d3c87a95de1ed3f814142e20753b",
+    "semantic_hash": "19f0d3c87a95de1ed3f814142e20753b"
+  },
+  "frontend/src/hooks/useChatStream.js": {
+    "mtime": 1785600507.0878859,
+    "ast_hash": "0e91224b79f7122101614346402b4dc2",
+    "semantic_hash": "0e91224b79f7122101614346402b4dc2"
+  },
+  "frontend/src/hooks/useChatStream.test.js": {
+    "mtime": 1785600526.8747768,
+    "ast_hash": "3c8bf6df0bf061797b634e25004178af",
+    "semantic_hash": "3c8bf6df0bf061797b634e25004178af"
+  },
+  "frontend/src/main.jsx": {
+    "mtime": 1785600480.047222,
+    "ast_hash": "a25bdfcf8aff9d29c06be919abc00eab",
+    "semantic_hash": "a25bdfcf8aff9d29c06be919abc00eab"
+  },
+  "frontend/src/pages/ChatPage.jsx": {
+    "mtime": 1785605417.198255,
+    "ast_hash": "ffaf5b2d1cdcef170536d76364a8b6db",
+    "semantic_hash": "ffaf5b2d1cdcef170536d76364a8b6db"
+  },
+  "frontend/src/pages/ChatPage.test.jsx": {
+    "mtime": 1785600599.7307103,
+    "ast_hash": "4df864738a7c2746f27b1030f0eeeb31",
+    "semantic_hash": "4df864738a7c2746f27b1030f0eeeb31"
+  },
+  "frontend/src/test/setup.js": {
+    "mtime": 1785600603.789048,
+    "ast_hash": "65ca0754e176c1c9692898474b09f136",
+    "semantic_hash": "65ca0754e176c1c9692898474b09f136"
+  },
+  "frontend/vite.config.js": {
+    "mtime": 1785600607.3758395,
+    "ast_hash": "76dd529203be80c244b7755000c8a566",
+    "semantic_hash": "76dd529203be80c244b7755000c8a566"
+  }
+}

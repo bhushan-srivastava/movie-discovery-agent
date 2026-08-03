@@ -1,4 +1,4 @@
-import { Avatar, Empty, Spin, List } from 'antd'
+import { Avatar, Empty, List } from 'antd'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -14,11 +14,8 @@ const components = {
   iframe: () => null,
 }
 
-export function ChatTranscript({ messages, streamingText, isStreaming }) {
-  // Only show streaming message if actively streaming AND text is being accumulated
-  const hasStreamingMessage = isStreaming && streamingText.length > 0
-
-  if (!messages.length && !hasStreamingMessage) {
+export function ChatTranscript({ messages }) {
+  if (!messages.length) {
     return <Empty className="transcript-empty" description="Ask for a movie recommendation to get started." />
   }
 
@@ -58,22 +55,6 @@ export function ChatTranscript({ messages, streamingText, isStreaming }) {
           )
         }}
       />
-      {hasStreamingMessage && (
-        <div className="message-row assistant-row streaming-message">
-          <Avatar>AI</Avatar>
-          <div className="message-content">
-            <div className="message-role">
-              Assistant
-              <Spin size="small" style={{ marginLeft: '8px' }} />
-            </div>
-            <div className="message-bubble assistant-bubble">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-                {streamingText || ''}
-              </ReactMarkdown>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

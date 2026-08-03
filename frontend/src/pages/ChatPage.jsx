@@ -5,8 +5,8 @@ import { SharedWarningBanner } from '../components/SharedWarningBanner'
 import { ChatTranscript } from '../components/ChatTranscript'
 import { ChatInput } from '../components/ChatInput'
 import { ToolStatusPanel } from '../components/ToolStatusPanel'
-import { createConversation, getMessages, listConversations, streamChat } from '../api/chatApi'
-import { useChatStream } from '../hooks/useChatStream'
+import { createConversation, getMessages, listConversations } from '../api/chatApi'
+import { useChatRequest } from '../hooks/useChatRequest'
 
 export function ChatPage() {
   const [conversations, setConversations] = useState([])
@@ -17,8 +17,8 @@ export function ChatPage() {
   const [pageError, setPageError] = useState(null)
   const [isDraft, setIsDraft] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  const stream = useChatStream()
-  const { reset: resetStream } = stream
+  const chatRequest = useChatRequest()
+  const { reset: resetRequest } = chatRequest
   const inputRef = useRef(null)
 
   const loadConversations = useCallback(async (selectFirst = true) => {
@@ -48,18 +48,18 @@ export function ChatPage() {
       return
     }
     setLoadingMessages(true)
-    resetStream()
+    resetRequest()
     getMessages(selectedId)
       .then(setMessages)
       .catch((error) => setPageError(error instanceof Error ? error.message : 'Unable to load messages.'))
       .finally(() => setLoadingMessages(false))
-  }, [selectedId, isDraft, resetStream])
+  }, [selectedId, isDraft, resetRequest])
 
   const handleClickNew = () => {
     setSelectedId(null)
     setIsDraft(true)
     setMessages([])
-    resetStream()
+    resetRequest()
     setInputValue('')
     setPageError(null)
     // Focus the input
@@ -85,10 +85,9 @@ export function ChatPage() {
         setInputValue('')
         await loadConversations(false)
 
-        // Now stream the message
-        await stream.startStream(newConv.id, trimmed)
+        await chatRequest.sendMessage(newConv.id, trimmed)
         setMessages(await getMessages(newConv.id))
-        stream.reset()
+        chatRequest.reset()
       } catch (error) {
         // Stay in draft mode, preserve message, show error
         setInputValue(trimmed)
@@ -116,14 +115,12 @@ export function ChatPage() {
     setInputValue('')
 
     try {
-      // Stream the message
-      await stream.startStream(selectedId, content)
-      // Reload persisted messages
+      await chatRequest.sendMessage(selectedId, content)
       setMessages(await getMessages(selectedId))
-      stream.reset()
+      chatRequest.reset()
       void loadConversations(false)
     } catch (error) {
-      // If streaming fails, show error but keep the created conversation
+      // If the request fails, show the error but keep the created conversation
       setPageError(error instanceof Error ? error.message : 'Failed to send message.')
       notification.error({ content: error instanceof Error ? error.message : 'Failed to send message.' })
     }
@@ -155,12 +152,12 @@ export function ChatPage() {
           {loadingMessages ? (
             <div className="loading-panel">Loading conversation…</div>
           ) : (
-            <ChatTranscript messages={messages} streamingText={stream.assistantText} isStreaming={stream.isStreaming} />
+            <ChatTranscript messages={messages} />
           )}
-          <ToolStatusPanel isStreaming={stream.isStreaming} activeTool={stream.activeTool} error={stream.error} />
+          <ToolStatusPanel isLoading={chatRequest.isLoading} error={chatRequest.error} />
           <ChatInput
             ref={inputRef}
-            disabled={stream.isStreaming}
+            disabled={chatRequest.isLoading}
             isDraft={isDraft}
             value={inputValue}
             onChange={setInputValue}

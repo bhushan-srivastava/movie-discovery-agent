@@ -40,43 +40,14 @@ export function getMessages(conversationId) {
   return request(`/conversations/${encodeURIComponent(conversationId)}/messages`)
 }
 
-export async function streamChat(
-  conversationId,
-  message,
-  onEvent,
-  signal,
-) {
-  const response = await fetch(`${apiBaseUrl}/conversations/${encodeURIComponent(conversationId)}/chat/stream`, {
+export async function sendChat(conversationId, message, signal) {
+  const response = await fetch(`${apiBaseUrl}/conversations/${encodeURIComponent(conversationId)}/chat`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/x-ndjson' },
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({ message }),
     signal,
   })
   if (!response.ok) throw await parseError(response)
-  if (!response.body) throw new Error('The chat stream did not include a response body.')
-
-  const reader = response.body.getReader()
-  const decoder = new TextDecoder()
-  let buffer = ''
-
-  const consumeLine = (line) => {
-    const trimmed = line.trim()
-    if (!trimmed) return
-    onEvent(JSON.parse(trimmed))
-  }
-
-  try {
-    while (true) {
-      const { value, done } = await reader.read()
-      buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done })
-      const lines = buffer.split('\n')
-      buffer = lines.pop() ?? ''
-      lines.forEach(consumeLine)
-      if (done) break
-    }
-    if (buffer.trim()) consumeLine(buffer)
-  } finally {
-    reader.releaseLock()
-  }
+  return response.json()
 }
 

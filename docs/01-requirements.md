@@ -26,7 +26,7 @@ The application is an intentionally shared demonstration experience. Conversatio
    - Values quick, understandable results
 
 2. **Application Developer**
-   - Evaluates the backend API, streaming behavior, and MCP integration
+    - Evaluates the backend API, Spring AI behavior, and MCP integration
    - Needs documented request/response behavior
    - Values clear contracts and predictable runtime behavior
 
@@ -45,7 +45,7 @@ The system SHALL accept natural-language movie requests through backend APIs use
 
 Requests SHALL be associated with a selected conversation.
 
-Responses SHALL support streaming behavior and conversational output.
+Responses SHALL return one completed JSON object and conversational output.
 
 ---
 
@@ -58,8 +58,8 @@ The UI SHALL include:
 - a new-conversation action
 - a main chat transcript panel
 - a message input area
-- streaming assistant output
-- visible MCP tool-use status
+- completed assistant output
+- a visible loading indicator while the request is pending
 - a visible warning that conversations are shared and sensitive information must not be entered
 
 ---
@@ -88,7 +88,7 @@ Persistence SHALL support:
 
 Assistant messages SHALL be persisted only after successful completion of a response.
 
-Partial assistant output SHALL NOT be persisted when a streamed response fails before successful completion.
+An assistant message SHALL NOT be persisted when a response fails before successful completion.
 
 ---
 
@@ -119,15 +119,11 @@ The ETL process SHALL:
 
 ---
 
-### FR-7: Stream Responses and Tool Status
+### FR-7: Return Completed JSON Responses
 
-The system SHALL stream assistant responses for chat requests.
+The system SHALL expose `POST /api/conversations/{conversationId}/chat` with a JSON request body containing required `message` and a JSON response containing the completed assistant `message`.
 
-The system SHALL surface MCP tool-use status during streaming.
-
-If a timeout occurs before streaming begins, the request SHALL fail with HTTP 504.
-
-If a timeout occurs after streaming has started, the system SHALL emit a stream error event.
+The endpoint SHALL return clear JSON error responses for validation, missing-conversation, model, and tool failures. Streaming, NDJSON framing, and streamed tool-status events are not required.
 
 ---
 
@@ -204,7 +200,7 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 - Database-backed movie queries should be optimized for interactive chat usage
 - Model requests SHALL use a configurable timeout
-- Streaming should begin as soon as output is available
+- The UI SHALL show a loading indicator while waiting for the completed response
 - External model latency is not guaranteed and is outside system control
 
 ---
@@ -213,9 +209,8 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 - All REST API inputs SHALL be validated before processing
 - Invalid REST inputs SHALL trigger exception handlers that map to HTTP 400 responses with clear error messages
-- A timeout before stream start SHALL return HTTP 504
-- A timeout after stream start SHALL emit a stream error event
-- Partial assistant output SHALL NOT be persisted after a failed response
+- Model and tool failures SHALL return valid JSON error responses
+- Assistant output SHALL NOT be persisted after a failed response
 - The application SHALL fail clearly when Neon configuration is invalid
 - MCP tool input validation failures SHALL be logged and reported to the GenAI model for recovery
 - No uncaught exceptions SHALL leak to the REST API caller; all non-streaming errors SHALL return valid JSON responses
@@ -227,7 +222,7 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 - All code SHALL follow the project's coding rules:
   - constructor injection
   - thin REST controllers
-  - centralized service-layer orchestration for chat, persistence, and streaming
+    - centralized service-layer orchestration for chat and persistence
 - The main backend SHALL own `Conversation` and `Message` persistence
 - Movie data access SHALL occur through the configured Neon MCP client boundary
 - Java SHALL not create or migrate schema objects
@@ -259,7 +254,7 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 **Acceptance Criteria:**
 - I can open the React + Ant Design chat UI
 - I can type a message and submit it
-- I can see assistant output stream into the chat transcript
+- I can see the completed assistant output in the chat transcript
 - I can see final movie results when returned
 
 ---
@@ -291,17 +286,16 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 ---
 
-### US-4: User Receives Streamed Assistant Output and Tool Status
+### US-4: User Receives Completed Assistant Output
 
 **As a** user  
 **I want to** see progress while the assistant is working  
 **So that** the app feels responsive and transparent  
 
 **Acceptance Criteria:**
-- I see streaming assistant text
-- I see tool-use status during the response
-- if a timeout occurs before streaming begins, the request fails with HTTP 504
-- if a timeout occurs after streaming begins, I see an error event or error state
+- I see a loading indicator while the request is pending
+- I see one completed assistant response after the request succeeds
+- failures are shown as a clear error state without partial assistant text
 
 ---
 
@@ -395,12 +389,12 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 ---
 
-### Criterion 5: Streaming Responses Are Delivered
+### Criterion 5: Completed JSON Responses Are Delivered
 
 **Given** a valid chat request for a selected conversation  
 **When** the backend processes the request  
-**Then** the client receives streamed assistant output  
-**And** tool-use status is surfaced during processing
+**Then** the client receives one completed JSON response containing the assistant message
+**And** the UI shows loading while processing
 
 ---
 
@@ -414,7 +408,7 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 ### Criterion 7: Assistant Message Persistence Occurs Only on Successful Completion
 
-**Given** a streamed assistant response  
+**Given** a completed JSON assistant response
 **When** the response completes successfully  
 **Then** the final assistant message is persisted  
 **And when** the response fails before successful completion  
@@ -422,19 +416,11 @@ The React UI SHALL use `VITE_API_BASE_URL` only and SHALL NOT contain database o
 
 ---
 
-### Criterion 8: Timeout Before Stream Start Returns HTTP 504
+### Criterion 8: Model or Tool Failures Return JSON Errors
 
-**Given** a chat request  
-**When** model timeout occurs before the response stream begins  
-**Then** the client receives HTTP 504
-
----
-
-### Criterion 9: Timeout After Stream Start Emits Error Event
-
-**Given** a streaming chat response  
-**When** model timeout occurs after streaming has started  
-**Then** the stream emits an error event
+**Given** a chat request
+**When** model or tool processing fails
+**Then** the client receives a valid JSON error response
 
 ---
 
@@ -556,7 +542,7 @@ The following features are explicitly out of scope for V1:
 | **Which Gemini model variant will be used in V1?** | Affects latency, cost, and prompt tuning | Team decision in Story 1 with compatibility verification |
 | **What is the exact normalized `Movie` schema?** | Affects ETL and query behavior | Finalize during design and persistence modeling |
 | **What is the exact source JSON dataset shape for ETL?** | Affects import normalization | Define prepared local dataset contract |
-| **What is the exact streaming payload contract?** | Affects UI/backend implementation details | Finalize in `docs/02-design.md` |
+| **What model timeout values are appropriate?** | Affects request latency and UX | Tune after provider selection and integration testing |
 | **How will schema compatibility be validated against Neon?** | Affects startup checks and entity mapping confidence | Validate via JPA `ddl-auto=validate` and runtime connectivity checks |
 | **What timeout values are appropriate for the chosen model provider?** | Affects runtime behavior and UX | Tune after provider selection and early integration testing |
 
@@ -579,8 +565,8 @@ A story is complete only when:
 
 - Shared conversations and completed messages persist correctly in Neon PostgreSQL
 - Movie tools operate on persisted `Movie` records
-- Streaming chat responses are visible in the UI
-- Tool-use status is surfaced during streaming
+- Completed JSON chat responses are visible in the UI
+- A loading indicator is visible while requests are pending
 - Only the latest 10 messages are used as model context
 - React uses only `VITE_API_BASE_URL`
 - All JUnit 5 tests pass in build

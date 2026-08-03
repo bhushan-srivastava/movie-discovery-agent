@@ -25,6 +25,17 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException ex) {
+        var err = new ErrorResponse();
+        err.setTimestamp(OffsetDateTime.now());
+        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        err.setMessage(ex.getMessage());
+        return ResponseEntity.badRequest().body(err);
+    }
+
+
     // NFR-2 safety net: guarantees no uncaught exception (message, exception type name,
     // or stack trace) ever reaches the HTTP caller for non-streaming endpoints, even if
     // Spring Boot's server.error.* defaults are ever changed. The real exception is

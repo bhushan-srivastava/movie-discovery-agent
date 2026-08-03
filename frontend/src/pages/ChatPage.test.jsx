@@ -10,7 +10,7 @@ vi.mock('../api/chatApi', async () => {
     listConversations: vi.fn(),
     createConversation: vi.fn(),
     getMessages: vi.fn(),
-    streamChat: vi.fn(),
+    sendChat: vi.fn(),
   }
 })
 
@@ -20,10 +20,7 @@ const secondConversation = { id: 'two', title: 'Second chat', createdAt: '', upd
 beforeEach(() => {
   vi.mocked(api.listConversations).mockResolvedValue([conversation])
   vi.mocked(api.getMessages).mockResolvedValue([])
-  vi.mocked(api.streamChat).mockImplementation(async (_id, _message, onEvent) => {
-    onEvent({ eventType: 'text-delta', data: { delta: 'Hello' } })
-    onEvent({ eventType: 'completion', data: { message: 'done' } })
-  })
+  vi.mocked(api.sendChat).mockResolvedValue({ message: 'Hello from the assistant' })
   vi.clearAllMocks()
 })
 
@@ -87,7 +84,7 @@ describe('ChatPage', () => {
     })
   })
 
-  it('uses returned conversation ID for streaming after creation', async () => {
+  it('uses returned conversation ID for a chat request after creation', async () => {
     const newConv = { id: 'new-conv-id', title: 'Test', createdAt: '', updatedAt: '' }
     vi.mocked(api.createConversation).mockResolvedValue(newConv)
 
@@ -99,7 +96,7 @@ describe('ChatPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /send/i }))
 
     await waitFor(() => {
-      expect(api.streamChat).toHaveBeenCalledWith('new-conv-id', 'test message', expect.any(Function))
+      expect(api.sendChat).toHaveBeenCalledWith('new-conv-id', 'test message')
     })
   })
 
@@ -111,7 +108,7 @@ describe('ChatPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /send/i }))
 
     await waitFor(() => {
-      expect(api.streamChat).toHaveBeenCalledWith('one', 'Find a film', expect.any(Function))
+      expect(api.sendChat).toHaveBeenCalledWith('one', 'Find a film')
       expect(api.createConversation).not.toHaveBeenCalled()
     })
   })
@@ -125,14 +122,14 @@ describe('ChatPage', () => {
     await waitFor(() => expect(api.getMessages).toHaveBeenCalledWith('two'))
   })
 
-  it('renders streamed text and completion state', async () => {
+  it('sends a normal request for the completed assistant response', async () => {
     render(<ChatPage />)
     await waitFor(() => expect(api.getMessages).toHaveBeenCalledWith('one'))
 
     fireEvent.change(screen.getByPlaceholderText('Follow up…'), { target: { value: 'Find a film' } })
     fireEvent.click(screen.getByRole('button', { name: /send/i }))
 
-    await waitFor(() => expect(api.streamChat).toHaveBeenCalledWith('one', 'Find a film', expect.any(Function)))
+    await waitFor(() => expect(api.sendChat).toHaveBeenCalledWith('one', 'Find a film'))
   })
 
   it('remains in draft mode if conversation creation fails', async () => {
@@ -146,7 +143,7 @@ describe('ChatPage', () => {
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Ask about movies…')).toHaveValue('test')
-      expect(api.streamChat).not.toHaveBeenCalled()
+      expect(api.sendChat).not.toHaveBeenCalled()
     })
   })
 })

@@ -21,7 +21,7 @@ This document defines the implementation-ready V1 technical design aligned to `d
 - Java schema validation mode: `spring.jpa.hibernate.ddl-auto=validate`
 - Java never creates, updates, or migrates schema objects
 - React + Ant Design UI using `VITE_API_BASE_URL` only
-- Streaming over HTTP `POST` with NDJSON via `fetch()` + `ReadableStream`
+- Completed JSON responses over HTTP `POST`
 - Standalone Node.js ETL that reads prepared local JSON and upserts movie data
 
 ### V1 Out of Scope
@@ -44,7 +44,7 @@ This document defines the implementation-ready V1 technical design aligned to `d
 ### Runtime Components
 
 1. **Main Backend (`backend/`)**
-   - REST APIs and NDJSON streaming endpoint
+   - REST APIs and completed JSON chat endpoint
    - Spring AI `ChatClient` orchestration with Gemini
    - Spring AI MCP client over Streamable HTTP
    - Conversation/message persistence
@@ -58,7 +58,7 @@ This document defines the implementation-ready V1 technical design aligned to `d
    - Ant Design chat interface
    - Conversation sidebar + new conversation action
    - Shared-conversation warning banner
-   - NDJSON stream consumption and tool-status rendering
+   - JSON response consumption and loading indicator
 
 4. **Node.js ETL (`etl/`)**
    - Reads prepared local JSON dataset
@@ -66,7 +66,7 @@ This document defines the implementation-ready V1 technical design aligned to `d
 
 ### High-Level Flow
 
-UI → Backend REST/stream controller → Spring AI `ChatClient` (Gemini) → Spring AI MCP client (Streamable HTTP) → Existing Neon MCP service → Neon `movie` table → backend NDJSON stream → UI.
+UI → Backend REST/chat controller → Spring AI `ChatClient` (Gemini) → Spring AI MCP client (Streamable HTTP) → Existing Neon MCP service → Neon `movie` table → completed JSON response → UI.
 
 ---
 
@@ -105,12 +105,12 @@ UI → Backend REST/stream controller → Spring AI `ChatClient` (Gemini) → Sp
 com.group.moviediscoveryagent
 ├─ controller
 │  ├─ ConversationController
-│  └─ ChatStreamController
+│  └─ ChatController
 ├─ service
 │  ├─ ConversationService
 │  ├─ MessageService
 │  ├─ AgentService
-│  └─ StreamEventService
+│  └─ ChatOrchestrationService
 ├─ persistence
 │  ├─ entity
 │  │  ├─ ConversationEntity
@@ -144,7 +144,7 @@ frontend/src
 ├─ api
 │  └─ chatApi
 ├─ hooks
-│  └─ useChatStream
+│  └─ useChatRequest
 └─ pages
    └─ ChatPage
 ```
@@ -213,7 +213,7 @@ etl/
 
 ---
 
-## 7. API and Streaming Contract
+## 7. API and JSON Request-Response Contract
 
 ### 7.1 Conversation APIs
 
@@ -221,38 +221,12 @@ etl/
 - `POST /api/conversations`
 - `GET /api/conversations/{conversationId}/messages`
 
-### 7.2 Streaming Chat API
+### 7.2 Chat API
 
-- `POST /api/conversations/{conversationId}/chat/stream`
+- `POST /api/conversations/{conversationId}/chat`
 - Request body includes `message` (required)
 
-### 7.3 NDJSON Framing (Normative)
-
-- `Content-Type: application/x-ndjson`
-- UTF-8 encoding
-- Exactly one valid JSON object per line
-- Every object line ends with `\n`
-
-Client behavior is normative:
-
-- Use `fetch()` + `ReadableStream`
-- Buffer partial chunks until a newline-terminated line is complete
-- Parse each complete line as one JSON object event
-
-### 7.4 Event Types
-
-- `tool-start`
-- `tool-result`
-- `text-delta`
-- `completion`
-- `error`
-
-### 7.5 Timeout Behavior
-
-- Timeout before first stream line: HTTP `504`
-- Timeout after stream starts: emit `error` event and close stream
-
----
+The chat endpoint returns one completed JSON object containing the assistant message. It does not require streaming, NDJSON framing, event sequencing, or streamed tool-status payloads.
 
 ## 8. MCP Client Contract and Guardrails
 
@@ -303,8 +277,7 @@ Neon MCP runtime use must satisfy all of the following:
 ### Backend
 
 - Validation failures: HTTP 400
-- Timeout before stream start: HTTP 504
-- Timeout after stream start: NDJSON `error` event
+- Model/tool failures: JSON error response
 - Persist assistant message only on successful completion
 - Never persist partial assistant output after failure
 
@@ -323,8 +296,8 @@ Neon MCP runtime use must satisfy all of the following:
 
 - Repository/service tests for `Conversation` and `Message`
 - Latest-10 context selection tests
-- NDJSON framing/event-sequencing tests
-- Timeout behavior tests (pre-stream 504, post-stream error event)
+- JSON response and error behavior tests
+- Model/tool failure tests
 - Assistant persistence rule tests
 - MCP client integration tests with Neon MCP
 - Guardrail compliance tests (table allowlist, row limit, read-only behavior)
@@ -339,8 +312,8 @@ Neon MCP runtime use must satisfy all of the following:
 
 ### UI
 
-- NDJSON parser tests (`fetch()` + `ReadableStream`)
-- Incomplete chunk buffering tests
+- JSON chat API tests
+- Completed response rendering tests
 - Sidebar/new-conversation behavior
 - Shared warning visibility tests
 - Tool-status and error rendering tests
@@ -355,8 +328,8 @@ Neon MCP runtime use must satisfy all of the following:
 2. **Prompt or policy drift from safety constraints**
    - Mitigation: explicit prompt template tests and runtime guardrail checks
 
-3. **NDJSON client parser edge cases**
-   - Mitigation: strict line-buffering tests and malformed-chunk handling tests
+3. **Slow model or MCP response**
+   - Mitigation: show a pending loading state and return a safe JSON error on failure
 
 4. **ETL data quality variability**
    - Mitigation: normalization validation plus import summary/reporting
@@ -391,7 +364,7 @@ Conversation creation is now a two-phase process:
    - Blank messages are rejected
    - Title created from first prompt: trimmed and truncated to 255 characters
    - `POST /api/conversations` called with title
-   - Returned conversation ID used for subsequent streaming
+   - Returned conversation ID used for subsequent chat requests
    - `ChatPage.isDraft` set to `false`
    - Sidebar refreshed to show new persisted conversation
 
@@ -402,7 +375,7 @@ Conversation creation is now a two-phase process:
 
 **Failure Behavior:**
 - Conversation creation failure: remain in draft mode, preserve typed message, show error
-- Streaming failure after creation: keep created conversation, refresh sidebar and messages
+- Chat request failure after creation: keep created conversation, refresh sidebar and messages
 
 ### 13.3 Markdown Response Format
 
@@ -428,7 +401,7 @@ Rendering behavior:
 - **User messages**: Rendered as plain text (no Markdown parsing)
 - **Links**: Custom renderer disables clickable anchors; only visible text is rendered
 - **Images**: Custom renderer returns null (images not rendered)
-- **Streaming**: Markdown accumulated progressively from text-delta events
+- **Completed responses**: Markdown is rendered after the JSON response is received
 - **Incomplete Markdown**: Rendering robust to incomplete or malformed Markdown
 - **HTML from model**: Raw HTML is not interpreted as DOM; HTML tags appear as text
 
@@ -480,7 +453,7 @@ Alignment and spacing:
 - Auto-scroll to bottom when message submitted or user already near bottom
 - Preserves scroll position when user intentionally scrolls upward
 - Bottom padding prevents composer overlap
-- Streaming deltas remain visible when user is near bottom
+- Completed responses remain visible when the user is near bottom
 
 ### 13.7 Composer and Responsive Layout
 
@@ -488,7 +461,7 @@ Alignment and spacing:
 - Compact Ant Design `Input.TextArea`
 - Send button vertically aligned
 - Enter-to-send, Shift+Enter for newline
-- Disabled while streaming, disabled when blank
+- Disabled while the request is loading, disabled when blank
 - Placeholder changes for draft vs. normal mode
 
 **Responsive (< 768px width):**
@@ -528,5 +501,5 @@ Design is implementation-ready with these locked decisions:
 - Neon MCP is read-only, project-scoped, and restricted to query/schema tools where possible
 - JPA in backend is only for `Conversation` and `Message`
 - Neon remains source of truth; Java performs no schema creation/migration
-- NDJSON streaming over POST consumed by `fetch()` + `ReadableStream`
-- Shared conversation UX, latest-10 context, and MCP tool-status streaming remain mandatory
+- Completed JSON chat over POST consumed by `fetch()` and `response.json()`
+- Shared conversation UX, latest-10 context, Spring AI ChatClient, MCP tools, persistence, validation, and security guardrails remain mandatory
